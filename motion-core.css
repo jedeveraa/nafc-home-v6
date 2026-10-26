@@ -1,0 +1,220 @@
+/* motion-core.css — generic motion layer for pixel-matched builds (xd-motion skill)
+   Link AFTER styles.css. Never edit styles.css for motion: it is the verified static layout.
+   Everything that moves is scoped to html.js. Every animation must END on the static position.
+   Sections marked ADAPT use the build's own class names (.btn / .link here): rename to match the project. */
+
+:root {
+  --ease-out: cubic-bezier(.16, 1, .3, 1);   /* expo out: reveals, image moves */
+  --ease: cubic-bezier(.2, .7, .1, 1);       /* soft: color, small hovers */
+  --ease-io: cubic-bezier(.65, 0, .35, 1);   /* in-out: fills, swaps, wipes */
+  --motion-radius: var(--r-card, 26px); /* clip reveals follow the card radius */
+  --load-base: 300ms;                        /* first-screen start. An intro curtain raises it (patterns.md "Intro curtain") */
+}
+
+/* ---------- page load: [data-load] style="--d:N" (N = order) ---------- */
+
+.js [data-load] {
+  opacity: 0;
+  translate: 0 28px;
+  animation: m-rise 1.1s var(--ease-out) forwards;
+  animation-delay: calc(var(--d, 0) * 90ms + var(--load-base));
+}
+@keyframes m-rise { to { opacity: 1; translate: 0 0; } }
+
+/* first-screen background layer that zooms out on load (add a div with this class + data-parallax) */
+.js .m-zoom { scale: 1.14; animation: m-zoom 2.6s var(--ease-out) calc(var(--load-base) - 200ms) forwards; will-change: translate, scale; }
+@keyframes m-zoom { to { scale: 1; } }
+
+/* ---------- [data-split] headings: words rise line by line out of a mask ---------- */
+
+.js [data-split]:not(.is-split) { visibility: hidden; }
+.js [data-split] .w {
+  display: inline-block;
+  clip-path: inset(-.3em -.2em -.24em -.2em); /* no layout change, and room for descenders */
+}
+.js [data-split] .w__i {
+  display: inline-block;
+  translate: 0 112%;
+  rotate: 5deg;
+  transform-origin: 0 100%;
+  transition:
+    translate 1.15s var(--ease-out) calc(var(--base, 0ms) + var(--li) * 110ms + var(--wi) * 22ms),
+    rotate 1.15s var(--ease-out) calc(var(--base, 0ms) + var(--li) * 110ms + var(--wi) * 22ms);
+}
+.js [data-split].is-in .w__i { translate: 0 0; rotate: 0deg; }
+.js [data-split].is-out .w__i { /* used when swapping text (sliders) */
+  translate: 0 -112%;
+  rotate: -3deg;
+  transition-duration: .55s;
+  transition-timing-function: var(--ease-io);
+  transition-delay: calc(var(--wi) * 12ms);
+}
+.js [data-split="load"] { --base: calc(var(--load-base) + 80ms); }
+
+/* [data-scrub] paragraph: opacity per word is set in JS */
+.js [data-scrub] .w { transition: opacity .25s linear; }
+
+/* ---------- [data-reveal] on scroll ---------- */
+
+.js [data-reveal] {
+  opacity: 0;
+  translate: 0 44px;
+  transition: opacity 1s var(--ease-out) var(--rd, 0ms), translate 1.2s var(--ease-out) var(--rd, 0ms);
+}
+.js [data-reveal="left"] { translate: -32px 0; }
+.js [data-reveal="fade"] { translate: 0 0; }
+.js [data-reveal].is-in { opacity: 1; translate: 0 0; }
+
+.js [data-reveal="clip"] {
+  opacity: 1;
+  translate: 0 0;
+  clip-path: inset(100% 0 0 0 round var(--motion-radius));
+  transition: clip-path 1.4s var(--ease-out) var(--rd, 0ms);
+}
+.js [data-reveal="clip"].is-in { clip-path: inset(0 0 0 0 round var(--motion-radius)); }
+
+/* blur rise: soft, glassy or luxury pages (variants.md §6b). Filter is heavy: text blocks and cards, not big grids */
+.js [data-reveal="blur"] {
+  filter: blur(8px);
+  transition: opacity 1s var(--ease-out) var(--rd, 0ms), translate 1.2s var(--ease-out) var(--rd, 0ms), filter 1s var(--ease-out) var(--rd, 0ms);
+}
+.js [data-reveal="blur"].is-in { filter: none; }
+
+/* frame open: the photo opens from a smaller rounded window (rounded designs). Has visible area at rest, so it is
+   observed on itself, not on its parent like "clip" */
+.js [data-reveal="frame"] {
+  opacity: 1;
+  translate: 0 0;
+  clip-path: inset(16% 8% 16% 8% round var(--motion-radius));
+  transition: clip-path 1.4s var(--ease-io) var(--rd, 0ms);
+}
+.js [data-reveal="frame"].is-in { clip-path: inset(0 0 0 0 round var(--motion-radius)); }
+
+/* ---------- .media wrapper (built from img[data-media]) ---------- */
+
+.js .media { position: relative; flex: none; overflow: hidden; border-radius: var(--motion-radius); }
+.js .media[data-cursor] { cursor: none; }
+.js .media > img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  transform: none;
+  scale: 1.12;                       /* headroom for the parallax */
+  translate: 0 var(--py, 0px);       /* parallax: no transition, updated per frame */
+  transition: scale 1.4s var(--ease-out);
+  will-change: translate;
+}
+.js .media[data-reveal="clip"]:not(.is-in) > img,
+.js .media[data-reveal="frame"]:not(.is-in) > img { scale: 1.35; }
+.js .media:hover > img { scale: 1.18; }
+
+/* ---------- sticky header ---------- */
+
+.js [data-sticky-header] { position: fixed; z-index: 50; transition: box-shadow .5s var(--ease), translate .6s var(--ease-out); animation: m-drop 1s var(--ease-out) calc(var(--load-base) - 250ms) both; }
+.js [data-sticky-header].is-scrolled { box-shadow: 0 18px 50px -22px rgba(0, 0, 0, .3); }
+.js [data-sticky-header="hide"].is-hidden { translate: 0 calc(-100% - 40px); }   /* clears a floating header's top offset too */
+@keyframes m-drop { from { translate: 0 -150%; } }
+
+/* ---------- ADAPT (NAFC v6): buttons use the "arrow push + color" variant, defined in animations.css ---------- */
+/* Arrow slide-through for text links (.readmore, .partners__all): the arrow is split into two copies.
+   HTML: <span class="lnk__icon i-arrow-light"><svg class="lnk__arrow">…</svg><svg class="lnk__arrow lnk__arrow--in">…</svg></span>
+   The first copy sits exactly where the single arrow sat, so the static build is unchanged. */
+
+.lnk__icon { position: relative; display: block; }
+.lnk__arrow { position: absolute; inset: 0; width: 100%; height: 100%; }
+.lnk__arrow--in { display: none; }                       /* static: one arrow, like the XD build */
+
+.js .lnk__icon { overflow: clip; overflow-clip-margin: 1px; }   /* room for the square line caps (gotchas §15) */
+.js .lnk__arrow--in { display: block; translate: -110% 0; }
+.js .lnk__arrow { transition: translate .55s var(--ease-io); }
+.js :is(.readmore, .partners__all, [data-card-link]):hover .lnk__arrow { translate: 110% 0; }
+.js :is(.readmore, .partners__all, [data-card-link]):hover .lnk__arrow--in { translate: 0 0; }
+
+/* ---------- ADAPT: text link = underline wipes in from the left, leaves to the right ---------- */
+
+.js .link__label {
+  background: linear-gradient(currentColor, currentColor) 100% calc(100% - 4px) / 0 1px no-repeat;
+  transition: background-size .55s var(--ease-out);
+}
+.js .link:hover .link__label,
+.js [data-card-link]:hover .link__label { background-position: 0 calc(100% - 4px); background-size: 100% 1px; }
+.js .link__icon { transition: scale .45s var(--ease-out); }
+.js .link:hover .link__icon { scale: 1.2; }
+
+/* ---------- [data-roll] label: letters roll up, a copy rises from below (split in JS only while active) ---------- */
+
+.js .ch { display: inline-block; clip-path: inset(0 -.25em); text-indent: 0; }   /* text-indent is inherited: reset it or every letter shifts */
+.js .ch__i {
+  position: relative;
+  display: inline-block;
+  text-indent: 0;
+  transition: translate .5s var(--ease-io) calc(var(--i) * var(--roll-step, 18ms));
+}
+.js .ch__i::after { content: attr(data-ch); content: attr(data-ch) / ""; position: absolute; top: 100%; left: 0; }   /* "/ ''" = not read aloud */
+.js .is-roll .ch__i { translate: 0 -100%; }
+
+/* ---------- [data-card-link] blocks ---------- */
+
+.js [data-card-link] { cursor: pointer; }
+.js [data-card-link][data-cursor] { cursor: none; }
+
+/* ---------- label cursor ---------- */
+
+.cursor { display: none; }
+/* .cursor is a zero-size anchor at the pointer; its <span> is the disc. The disc can widen for long labels
+   (a circle becomes a pill) and still grows from the pointer, because the scale sits on the anchor. */
+.js .cursor {
+  position: fixed;
+  z-index: 90;
+  top: 0;
+  left: 0;
+  display: block;   /* keep: the base rule above hides it */
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  scale: 0;
+  transition: scale .45s var(--ease-out);
+  will-change: translate, scale;
+}
+.js .cursor span {   /* ADAPT: size, shape, colors, font (see references/variants.md §7) */
+  position: absolute;
+  top: 0;
+  left: 0;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  min-width: 92px;
+  height: 92px;
+  padding: 0 20px;
+  border-radius: 46px;
+  background: var(--cursor-bg, var(--navy));
+  color: var(--cursor-fg, #fff);
+  font: 700 12px/1 var(--cursor-font, var(--f-head));
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.js .cursor.is-on { scale: 1; }
+.js .cursor.is-down { scale: .85; }
+@media (hover: none) { .js .cursor { display: none; } }
+
+/* ---------- Lenis base rules ---------- */
+
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: clip; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+/* ---------- reduced motion: keep interactions, drop movement ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .js *, .js *::before, .js *::after {
+    animation-duration: .01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;   /* infinite loops (marquee, glow) would flicker at .01ms */
+    transition-duration: .01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .js [data-reveal], .js [data-load] { opacity: 1; translate: 0 0; clip-path: none; filter: none; }
+  .js .cursor { display: none; }
+}
