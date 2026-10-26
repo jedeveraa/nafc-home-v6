@@ -115,10 +115,9 @@
 /* hover: each button keeps its own colour, a subtle step lighter (no swap to the other brand colour) */
 .js { --lighten: 14%; }
 .js :is(.btn--navy, .hbtn--find, .finder__submit):is(:hover, :focus-visible) { background: color-mix(in srgb, var(--navy), #fff var(--lighten)); }
-.js .hbtn--donate:is(:hover, :focus-visible) { background: color-mix(in srgb, var(--green), #fff var(--lighten)); }
 .js .btn--outline:is(:hover, :focus-visible) { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--green), #fff 30%); }
 /* white buttons have no lighter step, so they get the faintest cool tint instead */
-.js :is(.btn--white, .btn--line):is(:hover, :focus-visible) { background: #F4F7FB; }
+.js :is(.btn--white, .btn--line, .hbtn--donate):is(:hover, :focus-visible) { background: #F4F7FB; }
 .js .donate__btn:is(:hover, :focus-visible) span { translate: 2px 0; }
 .js :is(.donate__btn, .hbtn--donate):is(:hover, :focus-visible) .i-heart { scale: 1.18; }
 .js .hbtn--find:is(:hover, :focus-visible) .i-pin { translate: 0 -2px; }

@@ -174,7 +174,7 @@ button, input, select { font: inherit; color: inherit; margin: 0; }
   white-space: nowrap;
 }
 .hbtn span { margin-top: 11px; }
-.hbtn--donate { left: 1081.07px; top: 71px; width: 131.69px; height: 36px; background: var(--green); }
+.hbtn--donate { left: 1081.07px; top: 71px; width: 131.69px; height: 36px; background: var(--white); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.122); color: var(--navy); }
 .hbtn--donate .i-heart { width: 11.852px; height: 10.954px; margin-top: 13.02px; }
 .hbtn--donate span { width: 76px; margin-left: 9.85px; }
 .hbtn--find { left: 1220.72px; top: 70px; width: 133.28px; height: 37px; background: var(--navy); }
@@ -263,7 +263,7 @@ button, input, select { font: inherit; color: inherit; margin: 0; }
 
 .start { height: 887px; }
 .start .wrap { height: 887px; padding-top: 71px; }
-.start__title { width: 914px; color: var(--green); }
+.start__title { width: 914px; color: var(--ink); }
 .start__all { position: absolute; left: 1014.84px; top: 73px; width: 217.16px; }
 
 .paths { width: 504px; margin-top: 70px; }
@@ -313,28 +313,28 @@ button, input, select { font: inherit; color: inherit; margin: 0; }
 }
 .numbers__grid::after { background: linear-gradient(rgba(255, 255, 255, 0.918), rgba(255, 255, 255, 0.541) 26.601%, #fff); }
 .numbers .wrap { height: 849px; padding-top: 65px; }
-.numbers__title { width: 416px; margin-top: 22px; font: 700 45px/55px var(--f-head); color: var(--navy); }
-.numbers__side { position: absolute; left: 692.84px; top: 126px; }
+.numbers__title { width: 520px; margin-top: 25px; font: 700 54px/63px var(--f-head); color: var(--ink); }
+.numbers__side { position: absolute; left: 692.84px; top: 142px; }
 .numbers__lead { width: 539px; margin-left: 0.16px; font: 400 18px/24px var(--f-body); color: var(--slate); }
 .numbers__btn { width: 173.16px; margin-top: 17px; }
 
-.numbers__photo { position: absolute; left: 4px; top: 312px; width: 500px; height: 474px; overflow: hidden; border-radius: 25px; }
+.numbers__photo { position: absolute; left: 4px; top: 332px; width: 500px; height: 474px; overflow: hidden; border-radius: 25px; }
 /* cover 1672x941 → 842.2 x 474, offset -.0938 of the image: left -250.1 */
 .numbers__photo img { width: 842.2px; height: 474px; max-width: none; transform: translateX(-250.1px); }
 
-.stats { position: absolute; left: 520px; top: 312px; display: grid; grid-template-columns: 348px 348px; grid-auto-rows: 229px; gap: 16px; }
+.stats { position: absolute; left: 520px; top: 332px; display: grid; grid-template-columns: 348px 348px; grid-auto-rows: 229px; gap: 16px; }
 .stat { border-radius: var(--r-card); }
 .stat dt { font: 700 74px/63px var(--f-head); white-space: nowrap; }
 .stat dd { width: 261px; font: 400 16px/22px var(--f-body); }
 .stat--1 { padding: 51px 0 0 37px; background: var(--navy); color: var(--white); }
 .stat--1 dd { width: 275px; margin-top: 44px; }
 .stat--2 { padding: 53px 0 0 37px; background: var(--white); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.122); }
-.stat--2 dt { color: var(--green); }
+.stat--2 dt { color: var(--navy); }
 .stat--2 dd { margin: 53px 0 0 -1px; color: var(--ink); }
 .stat--3 { padding: 61px 0 0 39px; background: var(--white); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.122); }
-.stat--3 dt { color: var(--green); }
+.stat--3 dt { color: var(--navy); }
 .stat--3 dd { margin: 48px 0 0 -4px; color: var(--ink); }
-.stat--4 { padding: 61px 0 0 53px; background: var(--green); color: var(--white); }
+.stat--4 { padding: 61px 0 0 53px; background: var(--mist); color: var(--navy); }
 .stat--4 dd { margin-top: 48px; }
 
 /* ---------- impact (2635 → 3473) ---------- */
@@ -349,7 +349,6 @@ button, input, select { font: inherit; color: inherit; margin: 0; }
 .programs { position: absolute; left: 0; top: 276px; display: grid; grid-template-columns: 401px 400px 401px; column-gap: 15px; }
 .program { position: relative; height: 562px; padding-top: 138px; overflow: hidden; border-radius: var(--r-card); color: var(--white); }
 .program--navy { background: var(--navy); }
-.program--green { background: var(--green); }
 .program__media { position: absolute; left: 0; top: 0; width: 100%; height: 224px; overflow: hidden; }
 .program__media img { position: absolute; left: 0; width: 100%; height: auto; max-width: none; }
 .program__media svg { position: absolute; left: 0; top: 0; width: 100%; }
@@ -571,7 +570,7 @@ button, input, select { font: inherit; color: inherit; margin: 0; }
   height: 40px;
   padding-top: 10px;
   border-radius: 5px;
-  background: var(--green);
+  background: var(--navy);
   font: 400 18px/21px var(--f-head);
   color: var(--white);
   text-align: center;
